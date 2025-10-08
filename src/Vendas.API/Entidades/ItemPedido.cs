@@ -13,7 +13,7 @@ namespace Vendas.API.Entidades
         public int Id { get; set; }
         public int PedidoId { get; set; }
         public Pedido Pedido { get; set; } = null!;
-        public int ProdutoId { get; set; } //pega o id do produto do estoque
+        public int ProdutoId { get; set; }
         public int Quantidade { get; set; }
         
     }
