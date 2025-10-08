@@ -1,0 +1,13 @@
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\bin\Debug\net9.0\Messaging.Contracts.deps.json
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\bin\Debug\net9.0\Messaging.Contracts.dll
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\bin\Debug\net9.0\Messaging.Contracts.pdb
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\obj\Debug\net9.0\Messaging.Contracts.csproj.AssemblyReference.cache
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\obj\Debug\net9.0\Messaging.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\obj\Debug\net9.0\Messaging.Contracts.AssemblyInfoInputs.cache
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\obj\Debug\net9.0\Messaging.Contracts.AssemblyInfo.cs
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\obj\Debug\net9.0\Messaging.Contracts.csproj.CoreCompileInputs.cache
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\obj\Debug\net9.0\Messaging.Contracts.sourcelink.json
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\obj\Debug\net9.0\Messaging.Contracts.dll
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\obj\Debug\net9.0\refint\Messaging.Contracts.dll
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\obj\Debug\net9.0\Messaging.Contracts.pdb
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Contracts\obj\Debug\net9.0\ref\Messaging.Contracts.dll
