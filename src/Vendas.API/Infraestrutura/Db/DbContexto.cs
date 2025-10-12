@@ -16,13 +16,13 @@ namespace Vendas.API.Infraestrutura.Db
         public DbSet<ItemPedido> ItensPedidos { get; set; } = default!;
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            // Configuração para armazenar o enum StatusPedido como string no banco de dados
+            
             modelBuilder.Entity<Pedido>()
                 .Property(p => p.Status)
                 .HasConversion<string>();
 
             
-            // Configuração do relacionamento entre Pedido e ItensDoPedido
+            
             modelBuilder.Entity<Pedido>()
                 .HasMany(p => p.Itens)
                 .WithOne(i => i.Pedido)

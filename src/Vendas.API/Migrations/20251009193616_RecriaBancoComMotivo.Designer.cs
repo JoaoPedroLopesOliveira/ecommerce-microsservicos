@@ -12,8 +12,8 @@ using Vendas.API.Infraestrutura.Db;
 namespace Vendas.Api.Migrations
 {
     [DbContext(typeof(DbContexto))]
-    [Migration("20250930191603_CriaBancoVendas")]
-    partial class CriaBancoVendas
+    [Migration("20251009193616_RecriaBancoComMotivo")]
+    partial class RecriaBancoComMotivo
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -59,6 +59,9 @@ namespace Vendas.Api.Migrations
 
                     b.Property<DateTime>("DataPedido")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Motivo")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Status")
                         .IsRequired()

@@ -1,0 +1,147 @@
+version: '3.8'
+
+services:
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Banco Estoque
+  mysql-estoque:
+    image: mysql:8.0
+    container_name: mysql-estoque
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: estoque
+    ports:
+      - "3307:3306"
+    volumes:
+      - db_estoque:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Banco Vendas
+  mysql-vendas:
+    image: mysql:8.0
+    container_name: mysql-vendas
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vendas
+    ports:
+      - "3308:3306"
+    volumes:
+      - db_vendas:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Banco Usuários
+  mysql-usuarios:
+    image: mysql:8.0
+    container_name: mysql-usuarios
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: usuarios
+    ports:
+      - "3309:3306"
+    volumes:
+      - db_usuarios:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # API Estoque
+  estoque-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.estoque
+    container_name: estoque-api
+    ports:
+      - "5001:8080"
+    depends_on:
+      mysql-estoque:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Port=5672
+      - DB_HOST=mysql-estoque
+      - DB_PORT=3306
+      - DB_NAME=estoque
+      - DB_USER=root
+      - DB_PASS=root
+
+  # API Vendas
+  vendas-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.vendas
+    container_name: vendas-api
+    ports:
+      - "5002:8080"
+    depends_on:
+      mysql-vendas:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - RabbitMq__Host=rabbitmq
+      - RabbitMq__Port=5672
+      - DB_HOST=mysql-vendas
+      - DB_PORT=3306
+      - DB_NAME=vendas
+      - DB_USER=root
+      - DB_PASS=root
+
+  # API Gateway (usuários/autenticação)
+  gateway-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    container_name: gateway-api
+    ports:
+      - "5000:8080"
+    depends_on:
+      mysql-usuarios:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=http://+:8080
+      - DB_HOST=mysql-usuarios
+      - DB_PORT=3306
+      - DB_NAME=usuarios
+      - DB_USER=root
+      - DB_PASS=root
+
+volumes:
+  db_estoque:
+  db_vendas:
+  db_usuarios:

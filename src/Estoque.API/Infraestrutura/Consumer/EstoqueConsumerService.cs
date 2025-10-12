@@ -10,6 +10,7 @@ using Messaging.Contracts.Messages;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
+
 namespace Estoque.API.Infraestrutura.Consumer
 {
     public class EstoqueConsumerService : BackgroundService
@@ -96,12 +97,13 @@ namespace Estoque.API.Infraestrutura.Consumer
                     }
 
                     // Publica resposta
-                    var resposta = new RespostaEstoqueMessagem.RespostaEstoque(
-                        PedidoId: pedido.PedidoId,
-                        Aprovado: aprovado,
-                        CorrelationId: pedido.CorrelationId,
-                        Motivo: motivo
-                    );
+                    var resposta = new RespostaEstoqueMensagem
+                    {
+                        PedidoId = pedido.PedidoId,
+                        Aprovado = aprovado,
+                        CorrelationId = pedido.CorrelationId,
+                        Motivo = motivo
+                    };
 
                     var respostaJson = JsonSerializer.Serialize(resposta);
                     var respostaBytes = Encoding.UTF8.GetBytes(respostaJson);
@@ -117,12 +119,13 @@ namespace Estoque.API.Infraestrutura.Consumer
                 {
                     if (pedido != null)
                     {
-                        var resposta = new RespostaEstoqueMessagem.RespostaEstoque(
-                            PedidoId: pedido.PedidoId,
-                            Aprovado: false,
-                            CorrelationId: pedido.CorrelationId,
-                            Motivo: ex.Message
-                        );
+                        var resposta = new RespostaEstoqueMensagem
+                        {
+                            PedidoId = pedido.PedidoId,
+                            Aprovado = false,
+                            CorrelationId = pedido.CorrelationId,
+                            Motivo = ex.Message
+                        };
                         var respostaJson = JsonSerializer.Serialize(resposta);
                         var respostaBytes = Encoding.UTF8.GetBytes(respostaJson);
                         var props = _channel.CreateBasicProperties();

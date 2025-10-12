@@ -1,3 +1,4 @@
+using Messaging.Contracts.Infraestrutura;
 using Microsoft.EntityFrameworkCore;
 using Vendas.API.Infraestrutura.Db;
 using Vendas.API.Servicos;
@@ -17,6 +18,7 @@ builder.Services.AddDbContext<DbContexto>(options =>
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<RabbitMqPublisher>();
 
 var app = builder.Build();
 

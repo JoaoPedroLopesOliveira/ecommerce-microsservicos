@@ -14,6 +14,7 @@ namespace Vendas.API.Entidades
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public StatusPedido Status { get; set; }
+        public string? Motivo { get; set; }
         public DateTime DataPedido { get; set; }
         public ICollection <ItemPedido> Itens { get; set; } = new List<ItemPedido>()!;
     }

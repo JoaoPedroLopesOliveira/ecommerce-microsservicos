@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Vendas.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class CriaBancoVendas : Migration
+    public partial class RecriaBancoComMotivo : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -22,6 +22,8 @@ namespace Vendas.Api.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Status = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Motivo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DataPedido = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },

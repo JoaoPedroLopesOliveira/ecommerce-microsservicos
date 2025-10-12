@@ -57,6 +57,9 @@ namespace Vendas.Api.Migrations
                     b.Property<DateTime>("DataPedido")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("Motivo")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("longtext");

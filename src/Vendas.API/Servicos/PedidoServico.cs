@@ -1,23 +1,30 @@
+using Messaging.Contracts.Infraestrutura;
 using Microsoft.EntityFrameworkCore;
 using Vendas.API.DTOs;
 using Vendas.API.Entidades;
 using Vendas.API.Enuns;
 using Vendas.API.Infraestrutura.Db;
+using Messaging.Contracts;
+using Messaging.Contracts.Messages;
 
 namespace Vendas.API.Servicos
 {
     public class PedidoServico
     {
-        private readonly DbContexto contexto;
+        private readonly DbContexto _contexto;
+        private readonly RabbitMqPublisher _publisher;
+        private readonly IConfiguration _configuration;
 
-        public PedidoServico(DbContexto contexto)
+        public PedidoServico(DbContexto contexto, RabbitMqPublisher publisher, IConfiguration configuration)
         {
-            this.contexto = contexto;
+            _contexto = contexto;
+            _publisher = publisher;
+            _configuration = configuration;
         }
 
         public async Task<PedidoDTO> ConsultarPedidoAsync(int pedidoId)
         {
-            var pedidoEncontrado = await contexto.Pedidos
+            var pedidoEncontrado = await _contexto.Pedidos
                 .Include(p => p.Itens)
                 .FirstOrDefaultAsync(p => p.Id == pedidoId);
 
@@ -31,7 +38,7 @@ namespace Vendas.API.Servicos
         {
             int tamanhoPagina = 10;
 
-            var pedidos = await contexto.Pedidos
+            var pedidos = await _contexto.Pedidos
                 .Include(p => p.Itens)
                 .Skip((pagina - 1) * tamanhoPagina)
                 .Take(tamanhoPagina)
@@ -59,35 +66,49 @@ namespace Vendas.API.Servicos
             novoPedido.DataPedido = DateTime.UtcNow;
             novoPedido.Status = StatusPedido.PENDENTE;
 
-            contexto.Pedidos.Add(novoPedido);
-            await contexto.SaveChangesAsync();
-
+            _contexto.Pedidos.Add(novoPedido);
+            await _contexto.SaveChangesAsync();
+            var mensagem = new PedidoMensagem
+            {
+                PedidoId = novoPedido.Id,
+                Itens = novoPedido.Itens.Select(i => new ItemPedidoMensagem
+                {
+                    ProdutoId = i.ProdutoId,
+                    Quantidade = i.Quantidade
+                }).ToList(),
+                CorrelationId = Guid.NewGuid().ToString()
+            };
+            await _publisher.PublicarMensagemAsync(
+            exchange: _configuration["RabbitMq:Exchange"] ?? "ecommerce.exchange",
+            routingKey: "pedido.criado",
+            message: mensagem
+        );
             return MapearParaDTO(novoPedido);
         }
 
         public async Task AtualizarStatusPedidoAsync(int pedidoId, StatusPedido novoStatus)
         {
-            var pedido = await contexto.Pedidos.FindAsync(pedidoId);
+            var pedido = await _contexto.Pedidos.FindAsync(pedidoId);
 
             if (pedido == null)
                 throw new Exception($"O pedido com Id {pedidoId} não foi encontrado.");
 
             pedido.Status = novoStatus;
-            contexto.Pedidos.Update(pedido);
-            await contexto.SaveChangesAsync();
+            _contexto.Pedidos.Update(pedido);
+            await _contexto.SaveChangesAsync();
         }
 
         public async Task<PedidoDTO> DeletarPedidoAsync(int pedidoId)
         {
-            var pedido = await contexto.Pedidos
+            var pedido = await _contexto.Pedidos
                 .Include(p => p.Itens)
                 .FirstOrDefaultAsync(p => p.Id == pedidoId);
 
             if (pedido == null)
                 throw new Exception($"O pedido com Id {pedidoId} não foi encontrado.");
 
-            contexto.Pedidos.Remove(pedido);
-            await contexto.SaveChangesAsync();
+            _contexto.Pedidos.Remove(pedido);
+            await _contexto.SaveChangesAsync();
 
             return MapearParaDTO(pedido);
         }

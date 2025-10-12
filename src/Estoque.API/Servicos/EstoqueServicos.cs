@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Estoque.API.DTOs;
 using Estoque.API.Infraestrutura.Db;
 using Gateway.API.Entidades;
+using Messaging.Contracts.Infraestrutura;
+using Messaging.Contracts.Messages;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -13,10 +15,13 @@ namespace Estoque.API.Servicos
     public class EstoqueServicos
     {
         private readonly DbContexto _contexto;
-
-        public EstoqueServicos(DbContexto contexto)
+        private readonly RabbitMqPublisher _publisher;
+        private readonly IConfiguration _configuration;
+        public EstoqueServicos(DbContexto contexto, RabbitMqPublisher publisher, IConfiguration configuration)
         {
             _contexto = contexto;
+            _publisher = publisher;
+            _configuration = configuration;
         }
         public async Task<Produto> CadastrarProduto(Produto produto)
         {
@@ -30,12 +35,13 @@ namespace Estoque.API.Servicos
             return produto;
         }
 
-        public async Task AutorizaVenda(List<int> produtoIds, List<int> quantidades)
+        public async Task AutorizaVenda(List<int> produtoIds, List<int> quantidades, int PedidoId, string CorrelationId)
         {
             if (produtoIds.Count != quantidades.Count)
-            {
                 throw new Exception("A lista de produtos e quantidades devem ter o mesmo tamanho.");
-            }
+
+            bool aprovado = true;
+            string? motivo = null;
 
             for (int i = 0; i < produtoIds.Count; i++)
             {
@@ -45,17 +51,39 @@ namespace Estoque.API.Servicos
                 var produto = await _contexto.Produtos.FindAsync(produtoId);
                 if (produto == null)
                 {
-                    throw new Exception($"Produto com ID {produtoId} não encontrado.");
+                    aprovado = false;
+                    motivo = $"Produto com id {produtoId} não encontrado";
+                    break;
                 }
                 if (produto.QuantidadeEstoque < quantidade)
                 {
-                    throw new Exception($"Estoque insuficiente para o produto {produto.Nome}. Disponível: {produto.QuantidadeEstoque}, Requerido: {quantidade}");
+                    aprovado = false;
+                    motivo = $"Estoque insuficiente para o produto {produto.Nome}. Disponível: {produto.QuantidadeEstoque}, Requerido: {quantidade}";
+                    break;
                 }
+
                 produto.QuantidadeEstoque -= quantidade;
             }
-            await _contexto.SaveChangesAsync();
-        }
 
+            if (aprovado)
+                await _contexto.SaveChangesAsync();
+
+            var resposta = new RespostaEstoqueMensagem
+            {
+                PedidoId = PedidoId,
+                Aprovado = aprovado,
+                CorrelationId = CorrelationId,
+                Motivo = motivo
+            };
+
+            await _publisher.PublicarMensagemAsync(
+                exchange: _configuration["RabbitMq:Exchange"] ?? "ecommerce.exchange",
+                routingKey: "pedido.resposta",
+                message: resposta
+            );
+
+            Console.WriteLine($"[✔] Resposta enviada para Vendas: PedidoId {PedidoId} - Aprovado: {aprovado}");
+        }
         public async Task<ProdutoDTO> ConsultarEstoqueProduto(int produtoId)
         {
             var produto = await _contexto.Produtos.FindAsync(produtoId);

@@ -1,0 +1,16 @@
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\bin\Debug\net9.0\Messaging.Infra.deps.json
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\bin\Debug\net9.0\Messaging.Infra.dll
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\bin\Debug\net9.0\Messaging.Infra.pdb
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\bin\Debug\net9.0\Messaging.Contracts.dll
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\bin\Debug\net9.0\Messaging.Contracts.pdb
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\Messaging.Infra.csproj.AssemblyReference.cache
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\Messaging.Infra.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\Messaging.Infra.AssemblyInfoInputs.cache
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\Messaging.Infra.AssemblyInfo.cs
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\Messaging.Infra.csproj.CoreCompileInputs.cache
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\Messaging.Infra.sourcelink.json
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\Messagin.CB577E37.Up2Date
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\Messaging.Infra.dll
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\refint\Messaging.Infra.dll
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\Messaging.Infra.pdb
+C:\Users\joao\source\repos\ecommerce-microsservicos\src\Messaging.Infra\obj\Debug\net9.0\ref\Messaging.Infra.dll

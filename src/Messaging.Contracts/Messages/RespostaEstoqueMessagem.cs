@@ -5,13 +5,11 @@ using System.Threading.Tasks;
 
 namespace Messaging.Contracts.Messages
 {
-    public class RespostaEstoqueMessagem
+    public class RespostaEstoqueMensagem
     {
-        public static implicit operator RespostaEstoqueMessagem(RespostaEstoque v)
-        {
-            throw new NotImplementedException();
-        }
-
-        public record RespostaEstoque(int PedidoId, bool Aprovado, string CorrelationId, string? Motivo = null);
+        public int PedidoId { get; set; }
+        public bool Aprovado { get; set; }
+        public string? Motivo { get; set; }
+        public string CorrelationId { get; set; } = Guid.NewGuid().ToString();
     }
 }

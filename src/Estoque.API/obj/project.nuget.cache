@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "hy6w8lhzEYc=",
+  "dgSpecHash": "8Wg81M7ZggA=",
   "success": true,
   "projectFilePath": "C:\\Users\\joao\\source\\repos\\ecommerce-microsservicos\\src\\Estoque.API\\Estoque.Api.csproj",
   "expectedPackageFiles": [
@@ -25,6 +25,7 @@
     "C:\\Users\\joao\\.nuget\\packages\\microsoft.extensions.apidescription.server\\9.0.0\\microsoft.extensions.apidescription.server.9.0.0.nupkg.sha512",
     "C:\\Users\\joao\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\9.0.9\\microsoft.extensions.caching.abstractions.9.0.9.nupkg.sha512",
     "C:\\Users\\joao\\.nuget\\packages\\microsoft.extensions.caching.memory\\9.0.9\\microsoft.extensions.caching.memory.9.0.9.nupkg.sha512",
+    "C:\\Users\\joao\\.nuget\\packages\\microsoft.extensions.configuration\\9.0.9\\microsoft.extensions.configuration.9.0.9.nupkg.sha512",
     "C:\\Users\\joao\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\9.0.9\\microsoft.extensions.configuration.abstractions.9.0.9.nupkg.sha512",
     "C:\\Users\\joao\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\9.0.9\\microsoft.extensions.dependencyinjection.9.0.9.nupkg.sha512",
     "C:\\Users\\joao\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\9.0.9\\microsoft.extensions.dependencyinjection.abstractions.9.0.9.nupkg.sha512",

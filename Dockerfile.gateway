@@ -1,0 +1,20 @@
+# Etapa 1: Base - Imagem de runtime do ASP.NET
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
+WORKDIR /app
+EXPOSE 8080
+
+# Etapa 2: Build - Imagem com o SDK completo para compilar e publicar a aplicação
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /src
+COPY ["src/Gateway.API/Gateway.API.csproj", "src/Gateway.API/"]
+COPY ["src/Messaging.Contracts/Messaging.Contracts.csproj", "src/Messaging.Contracts/"]
+COPY ["src/Messaging.Infra/Messaging.Infra.csproj", "src/Messaging.Infra/"]
+RUN dotnet restore "src/Gateway.API/Gateway.API.csproj"
+COPY . .
+RUN dotnet publish "src/Gateway.API/Gateway.API.csproj" -c Release -o /app/publish
+
+# Etapa 3: Final - Imagem final, menor e otimizada
+FROM base AS final
+WORKDIR /app
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "Gateway.API.dll"]

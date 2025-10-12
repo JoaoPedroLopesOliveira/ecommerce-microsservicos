@@ -1,5 +1,6 @@
 using Estoque.API.Infraestrutura.Db;
 using Estoque.API.Servicos;
+using Messaging.Contracts.Infraestrutura;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,10 +13,10 @@ builder.Services.AddDbContext<DbContexto>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
 builder.Services.AddScoped<EstoqueServicos>();
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<RabbitMqPublisher>();
 
 var app = builder.Build();
 

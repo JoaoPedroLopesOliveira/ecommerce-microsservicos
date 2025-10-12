@@ -97,13 +97,20 @@ namespace Estoque.API.Controller
         {
             try
             {
-                await _servico.AutorizaVenda(dto.ProdutoIds, dto.Quantidades);
-                return Ok(new { mensagem = "Venda autorizada." });
+                await _servico.AutorizaVenda(
+                    dto.ProdutoIds,
+                    dto.Quantidades,
+                    dto.PedidoId,
+                    dto.CorrelationId
+                );
+
+                return Ok(new { mensagem = "Venda processada com sucesso." });
             }
             catch (Exception ex)
             {
                 return BadRequest(new { mensagem = ex.Message });
             }
         }
+
     }
 }
